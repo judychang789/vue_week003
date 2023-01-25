@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week3</title>
+
+    <link rel="stylesheet" href="assets/style/reset.css">
+    <link rel="stylesheet" href="assets/style/style.css">
+    
+    
+
+    <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    
+</head>
+<body>
+    
+
+    
+    
+    <div id="app">
+        <div class="conainer">
+            <div class="row justify-content-center">
+
+                <h1 class="mb-3">
+                    請登入
+                </h1>
+                
+                <div class="col">
+                    <form  class="form-signin" @submit.prevent="login">
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email address</label>
+                            <input placeholder="Email address" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="user.username">
+                            <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <input placeholder="Password" type="password" class="form-control" id="exampleInputPassword1" v-model="user.password">
+                        </div>
+                        
+                        <button type="submit" id="" class="btn btn-primary w-100 mt-3" >登入</button>
+                    </form>  
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <!-- <script src="assets/js/login.js" type="module"></script> -->
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script type="module">
+        const { createApp } = Vue;
+        createApp({
+        data(){
+            return{
+            user:{
+                username: "",
+                password: "",
+            }
+            }
+        },
+        methods:{
+            // login() {
+            //   alert(`你所輸入的帳號是: ${this.username} \n而你所輸入的密碼是${this.password}`);
+            // },
+            login(){
+            const api = 'https://vue3-course-api.hexschool.io/v2/admin/signin';
+            axios.post(api, this.user).then((res)=>{
+                const { token , expired } = res.data;
+                document.cookie = `judyToken=${token};expires=${new Date(expired)}; path=/`;
+                window.location = 'products.html';
+            })
+            .catch((err)=>{
+                alert(err.response.data.message);
+            })
+            }
+        }
+        }).mount("#app");
+
+    </script>
+
+
+</body>
+</html>
